@@ -9,6 +9,7 @@ const router = Router()
 const usuarioSchema = z.object({
   nome: z.string(),
   email: z.string(),
+  cidade: z.string(),
   senha: z.string()
 })
 

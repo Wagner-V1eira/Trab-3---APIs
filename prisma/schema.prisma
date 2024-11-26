@@ -13,40 +13,48 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Dado {
-  id        Int     @id @default(autoincrement())
-  nome      String  @db.VarChar(100)
-  descricao String  @db.VarChar(255)
-  usuarioId Int
-  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+model celular {
+  id            Int     @id @default(autoincrement())
+  marca         String  @db.VarChar(100)
+  modelo        String  @db.VarChar(255)
+  memoriaRam    Int
+  armazenamento Int
+  preco         Decimal @db.Decimal(10, 2)
+  usuarioId     Int
+  usuario       Usuario @relation(fields: [usuarioId], references: [id])
+  deleted       Boolean @default(false)
 
-  @@map("dados")
+  @@map("celulares")
 }
 
-model DadosArquivado {
-  id        Int     @id
-  nome      String  @db.VarChar(100)
-  email     String  @db.VarChar(100)
-  descricao String  @db.VarChar(255)
-  usuarioId Int
-  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+model CelularArquivado {
+  id            Int     @id
+  marca         String  @db.VarChar(100)
+  modelo        String  @db.VarChar(255)
+  memoriaRam    Int
+  armazenamento Int
+  preco         Decimal @db.Decimal(10, 2)
+  email         String  @db.VarChar(100)
+  usuarioId     Int
+  usuario       Usuario @relation(fields: [usuarioId], references: [id])
 
-  @@map("dadosArquivados")
+  @@map("celularArquivados")
 }
 
 model Usuario {
-  id                  Int              @id @default(autoincrement())
-  nome                String           @db.VarChar(100)
-  email               String           @db.VarChar(100)
-  senha               String           @db.VarChar(255)
+  id                  Int                @id @default(autoincrement())
+  nome                String             @db.VarChar(100)
+  email               String             @db.VarChar(100)
+  senha               String             @db.VarChar(255)
+  cidade              String             @default("Cidade não informada") @db.VarChar(100)
   ultimoAcesso        DateTime?
-  createdAt           DateTime         @default(now())
-  updatedAt           DateTime         @updatedAt
-  tentativasInvalidas Int              @default(0)
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+  tentativasInvalidas Int                @default(0)
   bloqueadoAte        DateTime?
   dataUltimoBloqueio  DateTime?
-  dados               Dado[]
-  dadosArquivados     DadosArquivado[]
+  celulares           celular[]
+  celularArquivados   CelularArquivado[]
   logs                Log[]
 
   @@map("usuarios")
